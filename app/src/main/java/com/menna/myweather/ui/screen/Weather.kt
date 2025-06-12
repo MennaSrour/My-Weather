@@ -1,32 +1,17 @@
 package com.menna.myweather.ui.screen
 
+import android.Manifest
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import com.menna.myweather.R
 import com.menna.myweather.domain.model.DailyWeatherDetails
 import com.menna.myweather.domain.model.DayMode
@@ -36,13 +21,19 @@ import com.menna.myweather.ui.composable.HourlyWeatherRow
 import com.menna.myweather.ui.composable.LocationInfo
 import com.menna.myweather.ui.composable.Next7DaysWeatherColumn
 import com.menna.myweather.ui.composable.TemperatureInfo
+import com.menna.myweather.ui.theme.DarkColor
+import com.menna.myweather.ui.theme.LightColor
+import com.menna.myweather.ui.viewModel.WeatherStateUi
 import com.menna.myweather.ui.mappers.mapWeatherStateToIconRes
 import com.menna.myweather.ui.mappers.toCardInfoList
 import com.menna.myweather.ui.mappers.toHourlyWeatherData
 import com.menna.myweather.ui.mappers.toNextDayWeather
-import com.menna.myweather.ui.theme.DarkColor
-import com.menna.myweather.ui.theme.LightColor
-import com.menna.myweather.ui.viewModel.WeatherStateUi
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import com.google.accompanist.permissions.*
 import com.menna.myweather.ui.viewModel.WeatherViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -51,9 +42,8 @@ import org.koin.androidx.compose.koinViewModel
 fun WeatherScreen(
     viewModel: WeatherViewModel = koinViewModel()
 ) {
-    val permissionState = rememberPermissionState(android.Manifest.permission.ACCESS_FINE_LOCATION)
+    val permissionState = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
     val weatherState by viewModel.weather.collectAsState()
-    var hasRequestedWeather by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         if (!permissionState.status.isGranted) {
@@ -62,50 +52,39 @@ fun WeatherScreen(
     }
 
     when {
-        permissionState.status.isGranted -> {
-            LaunchedEffect(true) {
-                if (!hasRequestedWeather) {
-                    viewModel.loadWeather()
-                    hasRequestedWeather = true
-                }
-            }
-
-            when {
-                weatherState.isLoading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
-
-                weatherState.error != null -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Error: ${weatherState.error}",
-                        )
-                    }
-                }
-
-                weatherState.currentDay != null -> {
-                    Scaffold { innerPadding ->
-                        Weather(
-                            weatherState = weatherState,
-                            modifier = Modifier
-                                .padding(innerPadding)
-                                .fillMaxSize()
-                        )
-                    }
-                }
+        weatherState.isLoading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
         }
 
+        weatherState.error != null -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Error: ${weatherState.error}",
+                )
+            }
+        }
+
+        weatherState.currentDay != null -> {
+            Scaffold { innerPadding ->
+                Weather(
+                    weatherState = weatherState,
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                )
+            }
+        }
     }
 }
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -182,7 +161,8 @@ fun Weather(
                 hourTextColor = mode.hourTextColor,
                 hourColor = mode.hourColor,
                 hourlyWeatherCardColor = mode.hourlyWeatherCardColor,
-                cardBorderColor = mode.cardBorderColor
+                cardBorderColor = mode.cardBorderColor,
+                todayColor = mode.todayColor
             )
         }
         item {

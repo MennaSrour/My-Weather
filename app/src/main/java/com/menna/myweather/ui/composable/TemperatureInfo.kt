@@ -66,11 +66,11 @@ fun TemperatureInfo(
     val tempInfoEndX = 180.dp
     val tempInfoCurrentX = tempInfoStartX + (tempInfoEndX - tempInfoStartX) * progress
 
-    val tempInfoStartY = 312.dp
+    val tempInfoStartY = 180.dp
     val tempInfoEndY = 100.dp
     val tempInfoCurrentY = tempInfoStartY + (tempInfoEndY - tempInfoStartY) * progress
 
-    val containerStartHeight = 455.dp
+    val containerStartHeight = 320.dp
     val containerEndHeight = 243.dp
     val containerCurrentHeight =
         containerStartHeight + (containerEndHeight - containerStartHeight) * progress
@@ -83,10 +83,9 @@ fun TemperatureInfo(
 
         Box(
             modifier = Modifier
-                .offset(x = imageCurrentX, y = 100.dp)
+                .offset(x = imageCurrentX)
                 .size(width = imageCurrentWidth, height = imageCurrentHeight)
         ) {
-
             Box(
                 modifier = Modifier
                     .matchParentSize()
@@ -94,7 +93,6 @@ fun TemperatureInfo(
                     .clip(CircleShape)
                     .background(color = blurColor)
             )
-
 
             Image(
                 painter = currentDayWeatherImage,
@@ -105,7 +103,6 @@ fun TemperatureInfo(
                     .zIndex(1f)
             )
         }
-
 
         Column(
             modifier = Modifier
@@ -134,7 +131,6 @@ fun TemperatureInfo(
                 modifier = Modifier.padding(top = if (progress > 0.5f) 4.dp else 8.dp)
             )
 
-
             Row(
                 modifier = Modifier
                     .padding(top = 12.dp)
@@ -144,7 +140,6 @@ fun TemperatureInfo(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically

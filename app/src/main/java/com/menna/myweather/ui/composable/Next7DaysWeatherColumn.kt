@@ -47,6 +47,7 @@ fun Next7DaysWeatherColumn(
             fontFamily = UrbanistFont,
             letterSpacing = 0.25.sp,
             lineHeight = 20.sp,
+            modifier = Modifier.padding(top=24.dp)
         )
         Column(
             modifier = Modifier

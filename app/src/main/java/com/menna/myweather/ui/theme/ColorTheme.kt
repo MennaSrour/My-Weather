@@ -23,7 +23,8 @@ data class AppColorScheme(
     val dayColor : Color,
     val temperatureColor: Color,
     val nextDayBorderColor: Color,
-    val daysBorderColor:Color
+    val daysBorderColor:Color,
+    val todayColor: Color
 )
 
 val LightColor = AppColorScheme(
@@ -47,12 +48,13 @@ val LightColor = AppColorScheme(
     dayColor = MeduimGray,
     temperatureColor = borderColor,
     nextDayBorderColor = TempRangeColor,
-    daysBorderColor =TempRangeColor
+    daysBorderColor =TempRangeColor,
+    todayColor=BlackColor
     
 )
 
 val DarkColor = AppColorScheme(
-    backgroundGradient = listOf(DarkBackground,DarkBackground),
+    backgroundGradient = listOf(Color.Black,Color.Black),
     cardBackground = DarkCard,
     cardBorderColor = DarkCardBorder,
     cardTextColor = WhiteGray,
@@ -72,5 +74,6 @@ val DarkColor = AppColorScheme(
     dayColor = BlackGray,
     temperatureColor = WhiteGray,
     nextDayBorderColor = DarkCardBorder,
-    daysBorderColor=DarkCardBorder
+    daysBorderColor=DarkCardBorder,
+    todayColor=WhiteColor
 )

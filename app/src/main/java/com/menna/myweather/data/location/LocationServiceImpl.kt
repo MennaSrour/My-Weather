@@ -5,6 +5,7 @@ import android.content.Context
 import android.location.Location
 import com.google.android.gms.location.LocationServices
 import com.menna.myweather.data.LocationUnavailableException
+import com.menna.myweather.data.mapper.toLocationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resumeWithException
@@ -26,12 +27,12 @@ class LocationServiceImpl(
                 if (location != null) {
                     cont.resume(location, null)
                 } else {
-                    cont.resumeWithException(LocationUnavailableException())
+                    cont.resumeWithException(LocationUnavailableException().toLocationException())
                 }
             }
         }.addOnFailureListener { exception ->
             if (cont.isActive) {
-                cont.resumeWithException(exception)
+                cont.resumeWithException(exception.toLocationException())
             }
         }
     }

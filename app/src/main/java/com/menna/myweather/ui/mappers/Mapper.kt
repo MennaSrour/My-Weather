@@ -9,6 +9,7 @@ import com.menna.myweather.domain.model.HourlyWeather
 import com.menna.myweather.ui.viewModel.CardInfo
 import com.menna.myweather.ui.viewModel.HourlyWeatherData
 import com.menna.myweather.ui.viewModel.NextDayWeather
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -117,4 +118,8 @@ fun mapWeatherStateToIconRes(state: String, dayMode: DayMode): Int {
 
 }
 
+suspend fun fetchUser(): String {
+    delay(1000)
+    return "Menna"
+}
 

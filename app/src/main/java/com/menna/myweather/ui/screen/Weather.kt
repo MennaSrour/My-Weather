@@ -37,6 +37,7 @@ import com.google.accompanist.permissions.*
 import com.menna.myweather.ui.viewModel.WeatherViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun WeatherScreen(
@@ -62,12 +63,13 @@ fun WeatherScreen(
         }
 
         weatherState.error != null -> {
+
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Error: ${weatherState.error}",
+                    text = "Error: ${weatherState.error}"
                 )
             }
         }
